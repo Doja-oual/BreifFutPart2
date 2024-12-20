@@ -1,17 +1,7 @@
-<!--
-=========================================================
-* Argon Dashboard 3 - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard
-* Copyright 2024 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
+<?php
+require '../config/actions.php';
+$players=get_all_players($conn);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,7 +21,9 @@
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <!-- CSS Files -->
-  <link id="pagestyle" href="../../assets/css/argon-dashboard.css?v=2.1.0" rel="stylesheet" />
+  <link id="pagestyle" href="../assets/css/argon-dashboard.css?v=2.1.0" rel="stylesheet" />
+  <link id="pagestyle" href="../assets/css/style.css"rel="stylesheet" />
+
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">
@@ -40,7 +32,7 @@
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/argon-dashboard/pages/dashboard.html " target="_blank">
-        <img src="../../assets/img/LOGO.jpg"assets/img/LOGO.jpg" width="26px" height="26px" class="navbar-brand-img h-100" alt="main_logo">
+        <img src="../assets/img/LOGO.jpg" width="26px" height="26px" class="navbar-brand-img h-100" alt="main_logo">
         <span class="ms-1 font-weight-bold">FUT Champions</span>
       </a>
     </div>
@@ -56,7 +48,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="../pages/tables.html">
+          <a class="nav-link " href="../pages/dachbord/Payers.html">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-calendar-grid-58 text-dark text-sm opacity-10"></i>
             </div>
@@ -64,7 +56,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="../pages/billing.html">
+          <a class="nav-link " href="../pages/dachbord/county.html">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-credit-card text-dark text-sm opacity-10"></i>
             </div>
@@ -72,7 +64,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="../pages/billing.html">
+          <a class="nav-link " href="../pages/dachbord/club.html">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-credit-card text-dark text-sm opacity-10"></i>
             </div>
@@ -89,10 +81,7 @@
         </li>
       </ul>
     </div>
-    <div class="sidenav-footer mx-3 ">
-     
-      <a class="btn btn-primary btn-sm mb-0 w-100" href="" type="button">ADD PLAYER</a>
-    </div>
+  
   </aside>
   <main class="main-content position-relative border-radius-lg ">
     <!-- Navbar -->
@@ -104,6 +93,10 @@
             <li class="breadcrumb-item text-sm text-white active" aria-current="page">Player</li>
           </ol>
           <h6 class="font-weight-bolder text-white mb-0">player</h6>
+          <div class="sidenav-footer mx-3 ">
+     
+      <a class="btn btn-primary btn-sm mb-0 w-100" href="" type="button">ADD PLAYER</a>
+    </div>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -113,12 +106,7 @@
             </div>
           </div>
           <ul class="navbar-nav  justify-content-end">
-            <li class="nav-item d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-white font-weight-bold px-0">
-                <i class="fa fa-user me-sm-1"></i>
-                <span class="d-sm-inline d-none">Sign In</span>
-              </a>
-            </li>
+           
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
                 <div class="sidenav-toggler-inner">
@@ -223,18 +211,45 @@
                 <table class="table align-items-center mb-0">
                   <thead>
                     <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Name</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> ID</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Name</th>
+
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Photo</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Position</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Rating </th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Club</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nationalite</th>
 
                       <th class="text-secondary opacity-7"></th>
                     </tr>
                   </thead>
                   <tbody>
-                  
-                  
+                  <?php if (!empty($players)): ?>
+                <?php foreach ($players as $player): ?>
+                    <tr>
+                        <td><?= ($player['PlayerID']) ?></td>
+                        <td><?= htmlspecialchars($player['Name']) ?></td>
+                        <td>
+                            <img src="<?= htmlspecialchars($player['Photo']) ?>" alt="Photo de <?= htmlspecialchars($player['Name']) ?>">
+                        </td>
+                        <td><?= htmlspecialchars($player['Position']) ?></td>
+                        <td><?= htmlspecialchars($player['Rating']) ?></td>
+                        <td class='text-left py-3 px-4 flex justify-center gap-3'>
+                        <span>
+                            <a href="../FUT Champions/updet.php?PlayerID=<?= $player['PlayerID'] ?>" class="btn-edit"><i
+                            class='fa-solid fa-pen-to-square cursor-pointer text-green-600'></i></a>
+                        </span>
+                        <span>
+                            <a href="delete.php?PlayerID=<?= $player['PlayerID'] ?>" class="btn-delete" onclick="return confirm('Voulez-vous vraiment supprimer cet étudiant ?')"><i
+                            class='fa-solid fa-trash-can cursor-pointer text-red-600'></i></a>
+                        </span>
+                    </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="5" style="text-align: center;">Aucun joueur trouvé</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
                   </tbody>
                 </table>
               </div>
@@ -351,11 +366,293 @@
       </div>
     </div>
   </div>
+  <div class="content">
+      <!--section-1/change des joueurs -->
+   
+
+      <!--Form des joueurs validation dynamique------------------------->
+      <section class="form-content"  >
+        <form id="form-content">
+          <div class="btn-switche">
+            <button type="button" id="btn-player">players</button>
+            <button
+              type="button"
+              id="btn-gardien"
+              class="disabled"
+              id="btn-gardien"
+            >
+              goalkeeper
+            </button>
+          </div>
+          <div class="input-groups">
+            <div class="input-groups-flex1">
+        
+              <div class="input-box">
+                <label for="Squad info ">Squad info </label>
+                <select name="SquadInfo" id="SquadInfo">
+                    <option value="3412">3-4-1-2</option>
+                    <option value="442">4-4-2</option>
+                    <option value="3421">3-4-2-1</option>
+                    <option value="433">4-3-3</option>
+                </select>
+              </div>
+              <div class="input-groub-box">
+              <!--name-->
+              <div class="input-box">
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" />
+              </div>
+            
+
+              <!--select-club-->
+              <div class="input-box">
+                <label for="football-club">Football Club</label>
+                <select name="football-club" id="football-club">
+                  <option value="" disabled selected>football club</option>
+                  <option value="1">FC Barcelona</option>
+                  <option value="2">Real Madrid</option>
+                  <option value="3">Manchester United</option>
+                  <option value="4">Liverpool FC</option>
+                  <option value="5">Bayern Munich</option>
+                  <option value="6">Paris Saint-Germain</option>
+                  <option value="7">Juventus</option>
+                  <option value="8">AC Milan</option>
+                  <option value="9">Chelsea FC</option>
+                  <option value="10">Arsenal FC</option>
+                  <option value="11">Manchester City</option>
+                  <option value="12">Tottenham Hotspur</option>
+                  <option value="13">Borussia Dortmund</option>
+                  <option value="14">Atlético Madrid</option>
+                  <option value="15">Inter Milan</option>
+                </select>
+              </div>
+            </div>
+          
+
+              <!-- les inpute de player rat/pac,sho,pass,drib,def,phy-->
+               <div id="player-input">
+              <div class="input-groub-box">
+                <div class="input-box">
+                  <label for="rating">rating</label>
+                  <input type="number" name="rating" id="rating" />
+                </div>
+                <div class="input-box">
+                  <label for="pace">pace</label>
+                  <input type="number" name="pace" id="pace" />
+                </div>
+              </div>
+              <div class="input-groub-box">
+                <div class="input-box">
+                  <label for="shooting">shooting</label>
+                  <input type="number" name="shooting" id="shooting" />
+                </div>
+                <div class="input-box">
+                  <label for="passing">passing</label>
+                  <input type="number" name="passing" id="passing" />
+                </div>
+              </div>
+              <div class="input-groub-box">
+                <div class="input-box">
+                  <label for="dribbling">dribbling</label>
+                  <input
+                    type="number"
+                    name="dribbling"
+                    id="dribbling"
+                    placeholder="dribbling"
+                  />
+                </div>
+                <div class="input-box">
+                  <label for="defending">defending</label>
+                  <input
+                    type="number"
+                    name="defending"
+                    id="defending"
+                    placeholder="defending"
+                  />
+                </div>
+                <div class="input-box">
+                  <label for="physical">physical</label>
+                  <input
+                    type="number"
+                    name="physical"
+                    id="physical"
+                    placeholder="defending"
+                  />
+                </div>
+              </div>
+            </div>
+              <!--les inpute de gardiens  -->
+
+              <div id="goalkeeper-input" style="display: none;">
+                <div class="input-groub-box">
+                <div class="input-box">
+                  <label for="handling">Handling</label>
+                  <input type="number" name="handling" id="handling" />
+                </div>
+                <div class="input-box">
+                  <label for="speed">speed</label>
+                  <input type="number" name="speed" id="speed" />
+                </div>
+                <div class="input-box">
+                  <label for="reflexes">Reflexes</label>
+                  <input class="hg" type="number" name="reflexes" id="reflexes" />
+                </div>
+                </div>
+                <div class="input-groub-box">
+                <div class="input-box">
+                  <label for="diving">Diving</label>
+                  <input type="number" name="diving" id="diving" />
+                </div>
+                <div class="input-box">
+                  <label for="positioning">positioning</label>
+                  <input type="number" name="positioning" id="positioning" />
+                </div>
+                <div class="input-box">
+                  <label for="kicking">kicking</label>
+                  <input type="number" name="kicking" id="kicking" />
+                </div>
+              </div>
+              </div>
+              <div class="input-groub-box">
+              
+
+                <!--select-position-->
+                <div class="input-box">
+                  <label for="position">position</label>
+                  <select name="position" id="position">
+                    <!-- <option value="GK">GK</option> -->
+                    <option value="chang">chang</option>
+                    <option value="CB1">CB1</option>
+                    <option value="CB2">CB2</option>
+                    <option value="CB3">CB3</option>
+                    <option value="CM1">CM1</option>
+                    <option value="CM1">CM1</option>
+  
+                    <option value="LM">LM</option>
+                    <option value="CAM">CAM</option>
+                    <option value="RM">RM</option>
+                    <option value="ST1">ST1</option>
+                    <option value="ST2">ST2</option>
+                  
+  
+  
+                  </select>
+                </div>
+                <!--select-nationality-->
+                <div class="input-box">
+                  <label for="nationality">Nationality</label>
+                  <select name="nationality" id="nationality">
+                    <option value="" disabled selected>nationality</option>
+                    <option value="1">American</option>
+                    <option value="2">Canadian</option>
+                    <option value="3">British</option>
+                    <option value="4">French</option>
+                    <option value="5">German</option>
+                    <option value="6">Indian</option>
+                    <option value="7">Australian</option>
+                    <option value="8">Mexican</option>
+                    <option value="9">Brazilian</option>
+                    <option value="10">Spanish</option>
+                    <option value="11">Italian</option>
+                    <option value="12">Chinese</option>
+                    <option value="13">Japanese</option>
+                    <option value="14">Russian</option>
+                    <option value="15">South African</option>
+                  </select>
+                </div>
+            
+              <div class="input-box">
+                <label for="flag">flag</label>
+                <!--select-->
+                <select id="mySelect">
+                  <option
+                    value="1"
+                    data-image="https://cdn.sofifa.net/flags/ar.png"
+                  >
+                    Ar
+                  </option>
+                  <option
+                    value="2"
+                    data-image="https://cdn.sofifa.net/flags/pt.png"
+                  >
+                    Pt
+                  </option>
+                  <option
+                    value="3"
+                    data-image="https://cdn.sofifa.net/flags/be.png"
+                  >
+                    Be
+                  </option>
+                  <option
+                    value="4"
+                    data-image="https://cdn.sofifa.net/flags/fr.png"
+                  >
+                    Fr
+                  </option>
+                  <option
+                    value="5"
+                    data-image="https://cdn.sofifa.net/flags/nl.png"
+                  >
+                    Nl
+                  </option>
+                  <option
+                    value="6"
+                    data-image="https://cdn.sofifa.net/flags/de.png"
+                  >
+                    Be
+                  </option>
+                  <option
+                    value="7"
+                    data-image="https://cdn.sofifa.net/flags/eg.png"
+                  >
+                    Eg
+                  </option>
+                  <option
+                    value="8"
+                    data-image="https://cdn.sofifa.net/flags/de.png"
+                  >
+                    De
+                  </option>
+                  <option
+                    value="9"
+                    data-image="https://cdn.sofifa.net/flags/si.png"
+                  >
+                    Si
+                  </option>
+                  <option
+                    value="10"
+                    data-image="https://cdn.sofifa.net/flags/hr.png"
+                  >
+                    Hr
+                  </option>
+                  <option
+                    value="11"
+                    data-image="https://cdn.sofifa.net/flags/be.png"
+                  ></option>
+                </select>
+              </div>
+            </div>
+            
+              <!-- <input type="submit" value="add player" class="btn" /> -->
+              <button class="btn" id="add__player">Add player</button>
+              <button class="btn" id="update__player">update player</button>
+              
+              <!-- <input type="submit" value=" update player"  style="display: none;" /> -->
+          
+            
+          </div>
+        </form>
+      </section>
+     
+    </div>
+    <div id="content-chengment">
+    </div>
+   
   <!--   Core JS Files   -->
-  <script src="../assets/js/core/popper.min.js"></script>
-  <script src="../assets/js/core/bootstrap.min.js"></script>
-  <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="assets/js/core/popper.min.js"></script>
+  <script src="assets/js/core/bootstrap.min.js"></script>
+  <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -368,7 +665,8 @@
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../assets/js/argon-dashboard.min.js?v=2.1.0"></script>
+  <script src="assets/js/argon-dashboard.min.js?v=2.1.0"></script>
+  <script src="./js/main.js"></script>
 </body>
 
 </html>
