@@ -1,15 +1,16 @@
 <?php
 
+use Dotenv\Dotenv;
 
-$servarname = "localhost";
-$username = "root";
-$password = "";
-$dbname= "FootballDB";
+require '../vendor/autoload.php'; // Composer autoloader
+
+// Load .env file from the root of your project
+$dotenv = Dotenv::createImmutable(dirname(__DIR__));
+$dotenv->load();    
 
 
-//create connection
 
-$conn = mysqli_connect($servarname, $username, $password,$dbname);
+$conn = mysqli_connect($_ENV['servarname'],$_ENV['username'],$_ENV['password'],$_ENV['dbname'],);
 
 if(!$conn){
     die("Connection failed :" .mysqli_connect_error());

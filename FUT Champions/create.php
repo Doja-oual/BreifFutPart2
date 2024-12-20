@@ -9,11 +9,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // Récupération des données du formulaire
     $name = $_POST['name'];
-    // $photo = $_POST['photo'];  // Chemin de la photo
+    $photo = $_POST['photo'];  // Chemin de la photo
     $position = $_POST['position'];
     $rating = $_POST['rating'];
-    // $countryID = $_POST['countryID'];
-    // $clubID = $_POST['clubID'];
+    $countryID = $_POST['countryID'];
+    $clubID = $_POST['clubID'];
     
     // Statistiques détaillées
     $pace = $_POST['pace'];
@@ -34,8 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //     $positioning = $_POST['positioning'];
     // }
 
-    // Vérification que toutes les données nécessaires sont présentes
-    if ($name  && $position && $rating ) {
+    if ($name &&  $photo && $position && $rating &&  $countryID && $clubID) {
         
         // Requête SQL pour insérer un joueur dans la table Players
         $query = "INSERT INTO Players (Name, Photo, Position, Rating, CountryID, ClubID) 
@@ -55,23 +54,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $playerID = mysqli_insert_id($conn);
 
             // Insérer les statistiques dans la table Player
-            $queryStats = "INSERT INTO Player (PlayerID, Pace, Shooting, Passing, Dribbling, Defending, Physical) 
-                           VALUES (?, ?, ?, ?, ?, ?, ?)";
-            $stmtStats = prepare_sql_query($conn, $queryStats, [
-                $playerID, $pace, $shooting, $passing, $dribbling, $defending, $physical
-            ]);
-            mysqli_stmt_execute($stmtStats);
+            // $queryStats = "INSERT INTO Player (PlayerID, Pace, Shooting, Passing, Dribbling, Defending, Physical) 
+            //                VALUES (?, ?, ?, ?, ?, ?, ?)";
+            // $stmtStats = prepare_sql_query($conn, $queryStats, [
+            //     $playerID, $pace, $shooting, $passing, $dribbling, $defending, $physical
+            // ]);
+            // mysqli_stmt_execute($stmtStats);
             
             // Si c'est un gardien de but, insérer ses statistiques dans la table Goalkeeper
-            if ($isGoalkeeper) {
-                $queryGK = "INSERT INTO Goalkeeper (PlayerID, Diving, Handling, Kicking, Reflexes, Speed, Positioning) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?)";
-                $stmtGK = prepare_sql_query($conn, $queryGK, [
-                    $playerID, $diving, $handling, $kicking, $reflexes, $speed, $positioning
-                ]);
-                mysqli_stmt_execute($stmtGK);
-            }
-
+//             if ($isGoalkeeper) {
+//                 $queryGK = "INSERT INTO Goalkeeper (PlayerID, Diving, Handling, Kicking, Reflexes, Speed, Positioning) 
+//                             VALUES (?, ?, ?, ?, ?, ?, ?)";
+//                 $stmtGK = prepare_sql_query($conn, $queryGK, [
+//                     $playerID, $diving, $handling, $kicking, $reflexes, $speed, $positioning
+//                 ]);
+//                 mysqli_stmt_execute($stmtGK);
+//             }
+// // 
             // Vérification si les données ont été insérées avec succès
             if (mysqli_stmt_affected_rows($stmt) > 0 && mysqli_stmt_affected_rows($stmtStats) > 0) {
                 $success_message = "Joueur ajouté avec succès !";
@@ -273,7 +272,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
       <!--Form des joueurs validation dynamique------------------------->
       <section class="form-content"  >
-        <form id="form-content" action="create.php" method="POST" >
+        <form id="form-content" method="POST" >
           <div class="btn-switche">
             <button type="button" id="btn-player">players</button>
             <button
@@ -288,15 +287,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="input-groups">
             <div class="input-groups-flex1">
         
-              <div class="input-box">
-                <label for="Squad info ">Squad info </label>
-                <select name="SquadInfo" id="SquadInfo">
-                    <option value="3412">3-4-1-2</option>
-                    <option value="442">4-4-2</option>
-                    <option value="3421">3-4-2-1</option>
-                    <option value="433">4-3-3</option>
-                </select>
-              </div>
+             
               <div class="input-groub-box">
               <!--name-->
               <div class="input-box">

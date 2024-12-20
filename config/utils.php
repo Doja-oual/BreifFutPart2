@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/db.php';
 
 /**
  * Clean a given input to prevent XSS attacks
@@ -58,7 +59,9 @@ function prepare_sql_query($conn, $query, $params = []) {
         error_log("Erreur de préparation de requête SQL : " . mysqli_error($conn));
         return false;
     }
-    
+    //Cela vérifie si des paramètres ont été passés à la fonction.
+// Si $params est vide (aucun paramètre à lier), cette section est ignorée.
+
     if (!empty($params)) {
         $types = str_repeat('s', count($params));
         mysqli_stmt_bind_param($stmt, $types, ...$params);
@@ -66,3 +69,4 @@ function prepare_sql_query($conn, $query, $params = []) {
     
     return $stmt;
 }
+

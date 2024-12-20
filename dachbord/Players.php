@@ -4,7 +4,6 @@ $players=get_all_players($conn);
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -217,6 +216,9 @@ $players=get_all_players($conn);
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Photo</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Position</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Rating </th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> club </th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> county </th>
+
 
                       <th class="text-secondary opacity-7"></th>
                     </tr>
@@ -225,13 +227,18 @@ $players=get_all_players($conn);
                   <?php if (!empty($players)): ?>
                 <?php foreach ($players as $player): ?>
                     <tr>
+
                         <td><?= ($player['PlayerID']) ?></td>
                         <td><?= htmlspecialchars($player['Name']) ?></td>
                         <td>
-                            <img src="<?= htmlspecialchars($player['Photo']) ?>" alt="Photo de <?= htmlspecialchars($player['Name']) ?>">
+                            <img src="<?= htmlspecialchars($player['Photo']) ?>" alt="Photo de <?= htmlspecialchars($player['Photo']) ?>">
                         </td>
                         <td><?= htmlspecialchars($player['Position']) ?></td>
                         <td><?= htmlspecialchars($player['Rating']) ?></td>
+                        <td><?= htmlspecialchars($player['ClubName']) ?></td>
+                        <td><?= htmlspecialchars($player['CountryName']) ?></td>
+
+
                         <td class='text-left py-3 px-4 flex justify-center gap-3'>
                         <span>
                             <a href="../FUT Champions/updet.php?PlayerID=<?= $player['PlayerID'] ?>" class="btn-edit"><i
