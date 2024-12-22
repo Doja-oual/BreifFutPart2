@@ -28,7 +28,7 @@ CREATE TABLE Players (
     FOREIGN KEY (ClubID) REFERENCES Club(ClubID)
 );
 CREATE TABLE Player (
-    PlayerID INT PRIMARY KEY AUTO_INCREMENT,
+    PlayerID INT PRIMARY KEY ,
     Pace INT,
     Shooting INT,
     Passing INT,
@@ -39,7 +39,7 @@ CREATE TABLE Player (
 );
 
 CREATE TABLE Goalkeeper (
-    PlayerID INT PRIMARY KEY AUTO_INCREMENT,
+    PlayerID INT PRIMARY KEY ,
     Diving INT,
     Handling INT,
     Kicking INT,

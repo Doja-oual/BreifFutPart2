@@ -9,6 +9,7 @@ function get_all_players($conn) {
      FROM players 
     JOIN  club ON players.ClubID = club.ClubID
      JOIN  Country ON players.CountryID = Country.CountryID 
+
      ORDER BY Name
  ";
     $result = mysqli_query($conn, $query);
