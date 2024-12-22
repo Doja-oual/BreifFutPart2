@@ -1,5 +1,6 @@
 <?php
 require '../config/actions.php';
+
 $players=get_all_players($conn);
 ?>
 <!DOCTYPE html>

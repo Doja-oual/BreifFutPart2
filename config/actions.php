@@ -12,6 +12,7 @@ function get_all_players($conn) {
      ORDER BY Name
  ";
     $result = mysqli_query($conn, $query);
+
     
     if (!$result) {
         error_log("Erreur de requête : " . mysqli_error($conn));
@@ -20,27 +21,40 @@ function get_all_players($conn) {
     }
     
     $players = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    // db_close($conn);
+    
     
     return $players;
 }
 
-function get_student_by_id($id) {
-    $query = "SELECT * FROM players WHERE PlayerID = ?";
-    $stmt = prepare_sql_query($conn, $query, [$id]);
+function get_all_clubs($conn) {
     
-    if (!$stmt) {
-        db_close($conn);
-        return false;
+    $query = "SELECT *FROM club ";
+    $result = mysqli_query($conn, $query);
+    
+    if (!$result) {
+        error_log("Erreur de requête : " . mysqli_error($conn));
+      
+        return [];
     }
     
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $player = mysqli_fetch_assoc($result);
+    $clubs = mysqli_fetch_all($result, MYSQLI_ASSOC);
     
-    mysqli_stmt_close($stmt);
-    db_close($conn);
     
-    return $player;
+    return $clubs;
 }
-?>
+function get_all_county($conn){
+    $query="SELECT * FROM  Country ";
+    $result = mysqli_query($conn,$query);
+     
+
+     if(!$result){
+        error_log("Errur de requet :" . mysqli_error($conn));
+        return[];
+     }
+      $county = mysqli_fetch_all($result,MYSQLI_ASSOC);
+      return $county;
+}
+
+
+
+ ?>

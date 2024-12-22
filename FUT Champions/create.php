@@ -1,108 +1,67 @@
 <?php
-require_once '../config/db.php'; 
-require_once '../dachbord/utils.php'; 
-
+require_once '../config/utils.php'; 
+require '../config/actions.php';
+$clubs=get_all_clubs($conn);
+$Nationalities= get_all_county($conn);
 $error_message = '';
 $success_message = '';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
     // Récupération des données du formulaire
-    $name = $_POST['name'];
-    $photo = $_POST['photo'];  // Chemin de la photo
-    $position = $_POST['position'];
-    $rating = $_POST['rating'];
-    $countryID = $_POST['countryID'];
-    $clubID = $_POST['clubID'];
+   
+
+
     
-    // Statistiques détaillées
-    $pace = $_POST['pace'];
-    $shooting = $_POST['shooting'];
-    $passing = $_POST['passing'];
-    $dribbling = $_POST['dribbling'];
-    $defending = $_POST['defending'];
-    $physical = $_POST['physical'];
-    
-    // Si le joueur est un gardien de but, on ajoute aussi ses statistiques spécifiques
-    // $isGoalkeeper = $_POST['isGoalkeeper'];  // 1 pour oui, 0 pour non
-    // if ($isGoalkeeper) {
-    //     $diving = $_POST['diving'];
-    //     $handling = $_POST['handling'];
-    //     $kicking = $_POST['kicking'];
-    //     $reflexes = $_POST['reflexes'];
-    //     $speed = $_POST['speed'];
-    //     $positioning = $_POST['positioning'];
+    // Validation basique
+    // if ($name && $position && $rating && $countryID && $clubID) {
+    //     // Photo handling (you might want to add proper file upload handling here)
+    //     $photo = "/path/to/default/photo.jpg"; // Default photo path
+        
+    //     // Requête SQL pour insérer un joueur dans la table Players
+    //     $query = "INSERT INTO Players (PlayerID ,Name, Photo, Position, Rating, CountryID, ClubID) 
+    //               VALUES (  ,?, ?, ?, ?, ?, ?)";
+        
+    //     try {
+    //         // Préparation de la requête
+    //         $stmt = prepare_sql_query($conn, $query, [
+    //             $name, $photo, $position, $rating, $countryID, $clubID
+    //         ]);
+            
+    //         if ($stmt) {
+    //             // Exécution de la requête pour insérer le joueur
+    //             if (mysqli_stmt_execute($stmt)) {
+    //                 // Récupérer l'ID du joueur inséré
+    //                 $playerID = mysqli_insert_id($conn);
+                    
+    //                 // Insérer les statistiques dans la table PlayerStats
+    //                 $queryStats = "INSERT INTO PlayerStats (PlayerID, Pace, Shooting, Passing, Dribbling, Defending, Physical) 
+    //                              VALUES (?, ?, ?, ?, ?, ?, ?)";
+    //                 $stmtStats = prepare_sql_query($conn, $queryStats, [
+    //                     $playerID, $pace, $shooting, $passing, $dribbling, $defending, $physical
+    //                 ]);
+                    
+    //                 if ($stmtStats && mysqli_stmt_execute($stmtStats)) {
+    //                     $success_message = "Joueur ajouté avec succès !";
+    //                 } else {
+    //                     $error_message = "Erreur lors de l'ajout des statistiques du joueur.";
+    //                 }
+                    
+    //                 mysqli_stmt_close($stmtStats);
+    //             } else {
+    //                 $error_message = "Erreur lors de l'ajout du joueur.";
+    //             }
+                
+    //             mysqli_stmt_close($stmt);
+    //         }
+    //     } catch (Exception $e) {
+    //         $error_message = "Une erreur est survenue: " . $e->getMessage();
+    //     }
+    // } else {
+    //     $error_message = "Tous les champs obligatoires doivent être remplis.";
     // }
+// }
 
-    if ($name &&  $photo && $position && $rating &&  $countryID && $clubID) {
-        
-        // Requête SQL pour insérer un joueur dans la table Players
-        $query = "INSERT INTO Players (Name, Photo, Position, Rating, CountryID, ClubID) 
-                  VALUES (?, ?, ?, ?, ?, ?)";
-        
-        // Préparation de la requête avec la fonction prepare_sql_query
-        $stmt = prepare_sql_query($conn, $query, [
-            $name, $photo, $position, $rating, $countryID, $clubID
-        ]);
-        
-        // Si la préparation de la requête a réussi
-        if ($stmt) {
-            // Exécution de la requête pour insérer le joueur
-            mysqli_stmt_execute($stmt);
-            
-            // Récupérer l'ID du joueur inséré
-            $playerID = mysqli_insert_id($conn);
-
-            // Insérer les statistiques dans la table Player
-            // $queryStats = "INSERT INTO Player (PlayerID, Pace, Shooting, Passing, Dribbling, Defending, Physical) 
-            //                VALUES (?, ?, ?, ?, ?, ?, ?)";
-            // $stmtStats = prepare_sql_query($conn, $queryStats, [
-            //     $playerID, $pace, $shooting, $passing, $dribbling, $defending, $physical
-            // ]);
-            // mysqli_stmt_execute($stmtStats);
-            
-            // Si c'est un gardien de but, insérer ses statistiques dans la table Goalkeeper
-//             if ($isGoalkeeper) {
-//                 $queryGK = "INSERT INTO Goalkeeper (PlayerID, Diving, Handling, Kicking, Reflexes, Speed, Positioning) 
-//                             VALUES (?, ?, ?, ?, ?, ?, ?)";
-//                 $stmtGK = prepare_sql_query($conn, $queryGK, [
-//                     $playerID, $diving, $handling, $kicking, $reflexes, $speed, $positioning
-//                 ]);
-//                 mysqli_stmt_execute($stmtGK);
-//             }
-// // 
-            // Vérification si les données ont été insérées avec succès
-            if (mysqli_stmt_affected_rows($stmt) > 0 && mysqli_stmt_affected_rows($stmtStats) > 0) {
-                $success_message = "Joueur ajouté avec succès !";
-            } else {
-                $error_message = "Erreur lors de l'ajout du joueur.";
-            }
-            
-            // Fermeture des requêtes préparées
-            mysqli_stmt_close($stmt);
-            mysqli_stmt_close($stmtStats);
-            if ($isGoalkeeper) {
-                mysqli_stmt_close($stmtGK);
-            }
-        } else {
-            $error_message = "Erreur de préparation de la requête.";
-        }
-    } else {
-        $error_message = "Données invalides. Veuillez vérifier vos informations.";
-    }
-
-    // Fermeture de la connexion à la base de données
-    db_close($conn);
-}
+// Le reste du HTML reste le même...
 ?>
-
-<!-- Affichage des messages -->
-<?php if ($success_message): ?>
-    <div class="success-message"><?= $success_message ?></div>
-<?php endif; ?>
-<?php if ($error_message): ?>
-    <div class="error-message"><?= $error_message ?></div>
-<?php endif; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -144,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" href="../pages/dashboard.html">
+          <a class="nav-link active" href="../pages/dashboard.php">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-tv-2 text-dark text-sm opacity-10"></i>
             </div>
@@ -152,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="../pages/dachbord/Payers.html">
+          <a class="nav-link " href="../dachbord/Players.php">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-calendar-grid-58 text-dark text-sm opacity-10"></i>
             </div>
@@ -272,7 +231,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
       <!--Form des joueurs validation dynamique------------------------->
       <section class="form-content"  >
-        <form id="form-content" method="POST" >
+        <form id="form-content" method="POST"  action="../config/traitement.php">
+          <input type="hidden" name="action" value="create">
           <div class="btn-switche">
             <button type="button" id="btn-player">players</button>
             <button
@@ -300,22 +260,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <div class="input-box">
                 <label for="football-club">Football Club</label>
                 <select name="football-club" id="football-club">
-                  <option value="" disabled selected>football club</option>
-                  <option value="1">FC Barcelona</option>
-                  <option value="2">Real Madrid</option>
-                  <option value="3">Manchester United</option>
-                  <option value="4">Liverpool FC</option>
-                  <option value="5">Bayern Munich</option>
-                  <option value="6">Paris Saint-Germain</option>
-                  <option value="7">Juventus</option>
-                  <option value="8">AC Milan</option>
-                  <option value="9">Chelsea FC</option>
-                  <option value="10">Arsenal FC</option>
-                  <option value="11">Manchester City</option>
-                  <option value="12">Tottenham Hotspur</option>
-                  <option value="13">Borussia Dortmund</option>
-                  <option value="14">Atlético Madrid</option>
-                  <option value="15">Inter Milan</option>
+                  <?php foreach($clubs as $club){ ?>
+                    <option value="<?= $club['ClubID'] ?>">
+                      <?= $club['ClubName'] ?>
+                    </option>
+                  <?php } ?>
                 </select>
               </div>
             </div>
@@ -327,6 +276,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="input-box">
                   <label for="rating">rating</label>
                   <input type="number" name="rating" id="rating" />
+                </div>
+                <div class="input-box">
+                <label for="profilePhoto">photo :</label>
+                <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*" required>
                 </div>
                 <div class="input-box">
                   <label for="pace">pace</label>
@@ -434,22 +387,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="input-box">
                   <label for="nationality">Nationality</label>
                   <select name="nationality" id="nationality">
-                    <option value="" disabled selected>nationality</option>
-                    <option value="1">American</option>
-                    <option value="2">Canadian</option>
-                    <option value="3">British</option>
-                    <option value="4">French</option>
-                    <option value="5">German</option>
-                    <option value="6">Indian</option>
-                    <option value="7">Australian</option>
-                    <option value="8">Mexican</option>
-                    <option value="9">Brazilian</option>
-                    <option value="10">Spanish</option>
-                    <option value="11">Italian</option>
-                    <option value="12">Chinese</option>
-                    <option value="13">Japanese</option>
-                    <option value="14">Russian</option>
-                    <option value="15">South African</option>
+                  <?php foreach($Nationalities as $Nationalitie){ ?>
+                    <option value="<?= $Nationalitie['CountryID'] ?>">
+                      <?= $Nationalitie['CountryName'] ?>
+                    </option>
+                  <?php } ?>                    
                   </select>
                 </div>
             
@@ -526,8 +468,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             
               <!-- <input type="submit" value="add player" class="btn" /> -->
-              <button class="btn" id="add__player">Add player</button>
-              <button class="btn" id="update__player">update player</button>
+              <button class="btn" id="add__player" name="addPlayer" > Add player</button>
+              <button class="btn" id="update__player" name="UpdatePlayer" >update player</button>
               
               <!-- <input type="submit" value=" update player"  style="display: none;" /> -->
           
@@ -556,7 +498,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="assets/js/argon-dashboard.min.js?v=2.1.0"></script>
-  <script src="./js/main.js"></script>
+  <script src="../assets/js/main.js"></script>
 </body>
 
 </html>

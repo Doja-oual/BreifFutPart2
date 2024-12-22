@@ -3,21 +3,21 @@ CREATE DATABASE FootballDB;
 
  
 CREATE TABLE Club (
-    ClubID INT PRIMARY KEY,
+    ClubID INT PRIMARY KEY AUTO_INCREMENT,
     ClubName VARCHAR(100),
     Logo VARCHAR(255)
 );
 
 
 CREATE TABLE Country (
-    CountryID INT PRIMARY KEY,
+    CountryID INT PRIMARY KEY AUTO_INCREMENT,
     CountryName VARCHAR(100),
     Flag VARCHAR(255)
 );
 
 
 CREATE TABLE Players (
-    PlayerID INT PRIMARY KEY,
+    PlayerID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(100),
     Photo VARCHAR(255),
     Position VARCHAR(50),
@@ -28,7 +28,7 @@ CREATE TABLE Players (
     FOREIGN KEY (ClubID) REFERENCES Club(ClubID)
 );
 CREATE TABLE Player (
-    PlayerID INT PRIMARY KEY,
+    PlayerID INT PRIMARY KEY AUTO_INCREMENT,
     Pace INT,
     Shooting INT,
     Passing INT,
@@ -39,7 +39,7 @@ CREATE TABLE Player (
 );
 
 CREATE TABLE Goalkeeper (
-    PlayerID INT PRIMARY KEY,
+    PlayerID INT PRIMARY KEY AUTO_INCREMENT,
     Diving INT,
     Handling INT,
     Kicking INT,
@@ -50,54 +50,55 @@ CREATE TABLE Goalkeeper (
 );
 
 
-INSERT INTO Club (ClubID, ClubName, Logo)
+INSERT INTO Club ( ClubName, Logo)
 VALUES 
-(1, 'Real Madrid', 'real_madrid_logo.png'),
-(2, 'FC Barcelona', 'fc_barcelona_logo.png'),
-(3, 'Manchester United', 'manchester_united_logo.png');
+( 'Real Madrid', 'real_madrid_logo.png'),
+( 'FC Barcelona', 'fc_barcelona_logo.png'),
+( 'Manchester United', 'manchester_united_logo.png');
 
 
-INSERT INTO Country (CountryID, CountryName, Flag)
+INSERT INTO Country ( CountryName, Flag)
 VALUES 
-(1, 'Spain', 'spain_flag.png'),
-(2, 'France', 'france_flag.png'),
-(3, 'England', 'england_flag.png');
+( 'Spain', 'spain_flag.png'),
+( 'France', 'france_flag.png'),
+( 'England', 'england_flag.png');
 
 
-INSERT INTO Players (PlayerID, Name, Photo, Position, Rating, CountryID, ClubID)
+INSERT INTO Players ( Name, Photo, Position, Rating, CountryID, ClubID)
 VALUES 
-(1, 'Karim Benzema', 'benzema_photo.png', 'Forward', 91, 2, 1),
-(2, 'Marc-André ter Stegen', 'ter_stegen_photo.png', 'Goalkeeper', 90, 1, 2),
-(3, 'Marcus Rashford', 'rashford_photo.png', 'Forward', 88, 3, 3);
+( 'Karim Benzema', 'benzema_photo.png', 'Forward', 91, 2, 1),
+( 'Marc-André ter Stegen', 'ter_stegen_photo.png', 'Goalkeeper', 90, 1, 2),
+( 'Marcus Rashford', 'rashford_photo.png', 'Forward', 88, 3, 3);
 
 
 
 
-INSERT INTO Player (PlayerID, Pace, Shooting, Passing, Dribbling, Defending, Physical)
+INSERT INTO Player ( Pace, Shooting, Passing, Dribbling, Defending, Physical)
 VALUES 
-(1, 78, 86, 81, 84, 40, 76),
-(3, 92, 85, 78, 89, 45, 80);
+( 78, 86, 81, 84, 40, 76),
+( 92, 85, 78, 89, 45, 80);
 
 
-INSERT INTO Goalkeeper (PlayerID, Diving, Handling, Kicking, Reflexes, Speed, Positioning)
+INSERT INTO Goalkeeper ( Diving, Handling, Kicking, Reflexes, Speed, Positioning)
 VALUES 
-(2, 85, 90, 87, 88, 55, 89);
+( 85, 90, 87, 88, 55, 89);
 
-INSERT INTO Players (PlayerID, Name, Photo, Position, Rating, CountryID, ClubID)
+INSERT INTO Players ( Name, Photo, Position, Rating, CountryID, ClubID)
 VALUES 
-(4, 'Thibaut Courtois', 'courtois_photo.png', 'Goalkeeper', 91, 2, 1),
-(5, 'Virgil van Dijk', 'vandijk_photo.png', 'Defender', 89, 3, 3),
-(6, 'Kylian Mbappé', 'mbappe_photo.png', 'Forward', 93, 2, 2);
+( 'Thibaut Courtois', 'courtois_photo.png', 'Goalkeeper', 91, 2, 1),
+( 'Virgil van Dijk', 'vandijk_photo.png', 'Defender', 89, 3, 3),
+( 'Kylian Mbappé', 'mbappe_photo.png', 'Forward', 93, 2, 2);
 
 
 
 
-INSERT INTO Player (PlayerID, Pace, Shooting, Passing, Dribbling, Defending, Physical)
+INSERT INTO Player ( Pace, Shooting, Passing, Dribbling, Defending, Physical)
 VALUES 
-(5, 75, 60, 70, 68, 92, 86), 
-(6, 97, 89, 80, 94, 38, 75); 
+( 75, 60, 70, 68, 92, 86), 
+( 97, 89, 80, 94, 38, 75); 
 
 
-INSERT INTO Goalkeeper (PlayerID, Diving, Handling, Kicking, Reflexes, Speed, Positioning)
+INSERT INTO Goalkeeper ( Diving, Handling, Kicking, Reflexes, Speed, Positioning)
 VALUES 
-(4, 89, 92, 85, 88, 50, 90);
+( 89, 92, 85, 88, 50, 90);
+
