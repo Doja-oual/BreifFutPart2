@@ -23,6 +23,7 @@ $players=get_all_players($conn);
   <!-- CSS Files -->
   <link id="pagestyle" href="../assets/css/argon-dashboard.css?v=2.1.0" rel="stylesheet" />
   <link id="pagestyle" href="../assets/css/style.css"rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/f01941449c.js" crossorigin="anonymous"></script>
 
 </head>
 
@@ -219,6 +220,8 @@ $players=get_all_players($conn);
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Rating </th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> club </th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> county </th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> actions </th>
+
 
 
                       <th class="text-secondary opacity-7"></th>
@@ -238,18 +241,17 @@ $players=get_all_players($conn);
                         <td><?= htmlspecialchars($player['Rating']) ?></td>
                         <td><?= htmlspecialchars($player['ClubName']) ?></td>
                         <td><?= htmlspecialchars($player['CountryName']) ?></td>
-
-
                         <td class='text-left py-3 px-4 flex justify-center gap-3'>
                         <span>
-                            <a href="../FUT Champions/updet.php?PlayerID=<?= $player['PlayerID'] ?>" class="btn-edit"><i
+                            <a href="../FUTChampions/updet.php" class="btn-edit"><i
                             class='fa-solid fa-pen-to-square cursor-pointer text-green-600'></i></a>
                         </span>
                         <span>
-                            <a href="delete.php?PlayerID=<?= $player['PlayerID'] ?>" class="btn-delete" onclick="return confirm('Voulez-vous vraiment supprimer cet étudiant ?')"><i
+                            <a href="../FUTChampions/delete.php?PlayerID=<?= $player['PlayerID'] ?>" class="btn-delete" onclick="return confirm('Voulez-vous vraiment supprimer cet étudiant ?')"><i
                             class='fa-solid fa-trash-can cursor-pointer text-red-600'></i></a>
                         </span>
                     </td>
+
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>

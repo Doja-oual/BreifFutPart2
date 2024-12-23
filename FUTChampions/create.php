@@ -6,61 +6,7 @@ $Nationalities= get_all_county($conn);
 $error_message = '';
 $success_message = '';
 
-    // Récupération des données du formulaire
-   
-
-
     
-    // Validation basique
-    // if ($name && $position && $rating && $countryID && $clubID) {
-    //     // Photo handling (you might want to add proper file upload handling here)
-    //     $photo = "/path/to/default/photo.jpg"; // Default photo path
-        
-    //     // Requête SQL pour insérer un joueur dans la table Players
-    //     $query = "INSERT INTO Players (PlayerID ,Name, Photo, Position, Rating, CountryID, ClubID) 
-    //               VALUES (  ,?, ?, ?, ?, ?, ?)";
-        
-    //     try {
-    //         // Préparation de la requête
-    //         $stmt = prepare_sql_query($conn, $query, [
-    //             $name, $photo, $position, $rating, $countryID, $clubID
-    //         ]);
-            
-    //         if ($stmt) {
-    //             // Exécution de la requête pour insérer le joueur
-    //             if (mysqli_stmt_execute($stmt)) {
-    //                 // Récupérer l'ID du joueur inséré
-    //                 $playerID = mysqli_insert_id($conn);
-                    
-    //                 // Insérer les statistiques dans la table PlayerStats
-    //                 $queryStats = "INSERT INTO PlayerStats (PlayerID, Pace, Shooting, Passing, Dribbling, Defending, Physical) 
-    //                              VALUES (?, ?, ?, ?, ?, ?, ?)";
-    //                 $stmtStats = prepare_sql_query($conn, $queryStats, [
-    //                     $playerID, $pace, $shooting, $passing, $dribbling, $defending, $physical
-    //                 ]);
-                    
-    //                 if ($stmtStats && mysqli_stmt_execute($stmtStats)) {
-    //                     $success_message = "Joueur ajouté avec succès !";
-    //                 } else {
-    //                     $error_message = "Erreur lors de l'ajout des statistiques du joueur.";
-    //                 }
-                    
-    //                 mysqli_stmt_close($stmtStats);
-    //             } else {
-    //                 $error_message = "Erreur lors de l'ajout du joueur.";
-    //             }
-                
-    //             mysqli_stmt_close($stmt);
-    //         }
-    //     } catch (Exception $e) {
-    //         $error_message = "Une erreur est survenue: " . $e->getMessage();
-    //     }
-    // } else {
-    //     $error_message = "Tous les champs obligatoires doivent être remplis.";
-    // }
-// }
-
-// Le reste du HTML reste le même...
 ?>
 
 <!DOCTYPE html>
