@@ -243,11 +243,11 @@ $players=get_all_players($conn);
                         <td><?= htmlspecialchars($player['CountryName']) ?></td>
                         <td class='text-left py-3 px-4 flex justify-center gap-3'>
                         <span>
-                            <a href="../FUTChampions/updet.php" class="btn-edit"><i
+                            <a href="../FUTChampions/updet.php?PlayerID=<?= $player['PlayerID'] ?>" class="btn-edit"><i
                             class='fa-solid fa-pen-to-square cursor-pointer text-green-600'></i></a>
                         </span>
                         <span>
-                            <a href="../FUTChampions/delete.php?PlayerID=<?= $player['PlayerID'] ?>" class="btn-delete" onclick="return confirm('Voulez-vous vraiment supprimer cet étudiant ?')"><i
+                            <a href="../FUTChampions/delete.php?PlayerID=<?= $player['PlayerID'] ?>" class="btn-delete" onclick="return confirm('Voulez-vous vraiment supprimer cet player ?')"><i
                             class='fa-solid fa-trash-can cursor-pointer text-red-600'></i></a>
                         </span>
                     </td>

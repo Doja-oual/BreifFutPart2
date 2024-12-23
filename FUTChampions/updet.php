@@ -1,46 +1,24 @@
 <?php
-require_once '../config/db.php';
-require_once '../includes/utils.php';
-require_once '../includes/functions.php';
+include '../config/db.php'; 
 
-$error_message = '';
-$success_message = '';
+if (isset($_GET['playerID'])) {
+    $playerID = intval($_GET['playerID']);
 
+    $query = "SELECT * FROM Players WHERE PlayerID = ?";
+    $stmt = prepare_sql_query($conn, $query, [$playerID]);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
 
-if (!isset($_GET['PlayerID']) || !is_numeric($_GET['PlayerID'])) {
-    header('Location: Players.php');
-    exit();
-}
-
-$id = intval($_GET['PlayerID']);
-$player = get_student_by_id($PlayerID);
-
-if (!$player) {
-    header('Location: Player.php');
-    exit();
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  
-    
-        if ($stmt) {
-            mysqli_stmt_execute($stmt);
-            
-            if (mysqli_stmt_affected_rows($stmt) > 0) {
-                $success_message = "Étudiant modifié avec succès !";
-                $player = get_student_by_id($PlayerID);
-            } else {
-                $error_message = "Aucune modification effectuée.";
-            }
-            
-            mysqli_stmt_close($stmt);
-        }
+    if ($result && mysqli_num_rows($result) > 0) {
+        $player = mysqli_fetch_assoc($result);
     } else {
-        $error_message = "Données invalides. Veuillez vérifier vos informations.";
+        echo "Joueur introuvable.";
+        exit();
     }
-    
-    db_close($conn);
-
+} else {
+    echo "ID manquant.";
+    exit();
+}
 ?>
 
 
@@ -61,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-icons.css" rel="stylesheet" />
   <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- Font Awesome Icons -->
-  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <!-- <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script> -->
   <!-- CSS Files -->
   <link id="pagestyle" href="../assets/css/argon-dashboard.css?v=2.1.0" rel="stylesheet" />
   <link id="pagestyle" href="../assets/css/style.css"rel="stylesheet" />
@@ -84,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" href="../pages/dashboard.html">
+          <a class="nav-link active" href="../pages/dashboard.php">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-tv-2 text-dark text-sm opacity-10"></i>
             </div>
@@ -92,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="../pages/dachbord/Payers.html">
+          <a class="nav-link " href="../dachbord/Players.php">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-calendar-grid-58 text-dark text-sm opacity-10"></i>
             </div>
@@ -212,7 +190,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
       <!--Form des joueurs validation dynamique------------------------->
       <section class="form-content"  >
-        <form id="form-content" method="POST"  action=" Players.php">
+        <form id="form-content" method="POST"  action="../config/traitement.php">
+        <input type="hidden" name="action" value="update">
           <div class="btn-switche">
             <button type="button" id="btn-player">players</button>
             <button
@@ -240,22 +219,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <div class="input-box">
                 <label for="football-club">Football Club</label>
                 <select name="football-club" id="football-club">
-                  <option value="" disabled selected>football club</option>
-                  <option value="1">FC Barcelona</option>
-                  <option value="2">Real Madrid</option>
-                  <option value="3">Manchester United</option>
-                  <option value="4">Liverpool FC</option>
-                  <option value="5">Bayern Munich</option>
-                  <option value="6">Paris Saint-Germain</option>
-                  <option value="7">Juventus</option>
-                  <option value="8">AC Milan</option>
-                  <option value="9">Chelsea FC</option>
-                  <option value="10">Arsenal FC</option>
-                  <option value="11">Manchester City</option>
-                  <option value="12">Tottenham Hotspur</option>
-                  <option value="13">Borussia Dortmund</option>
-                  <option value="14">Atlético Madrid</option>
-                  <option value="15">Inter Milan</option>
+                  <?php foreach($clubs as $club){ ?>
+                    <option value="<?= $club['ClubID'] ?>">
+                      <?= $club['ClubName'] ?>
+                    </option>
+                  <?php } ?>
                 </select>
               </div>
             </div>
@@ -268,6 +236,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <label for="rating">rating</label>
                   <input type="number" name="rating" id="rating" />
                 </div>
+                <div class="input-box">
+                <label for="profilePhoto">photo :</label>
+                <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*" required/>
+                  </div>
+                  
                 <div class="input-box">
                   <label for="pace">pace</label>
                   <input type="number" name="pace" id="pace" />
@@ -374,22 +347,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="input-box">
                   <label for="nationality">Nationality</label>
                   <select name="nationality" id="nationality">
-                    <option value="" disabled selected>nationality</option>
-                    <option value="1">American</option>
-                    <option value="2">Canadian</option>
-                    <option value="3">British</option>
-                    <option value="4">French</option>
-                    <option value="5">German</option>
-                    <option value="6">Indian</option>
-                    <option value="7">Australian</option>
-                    <option value="8">Mexican</option>
-                    <option value="9">Brazilian</option>
-                    <option value="10">Spanish</option>
-                    <option value="11">Italian</option>
-                    <option value="12">Chinese</option>
-                    <option value="13">Japanese</option>
-                    <option value="14">Russian</option>
-                    <option value="15">South African</option>
+                  <?php foreach($Nationalities as $Nationalitie){ ?>
+                    <option value="<?= $Nationalitie['CountryID'] ?>">
+                      <?= $Nationalitie['CountryName'] ?>
+                    </option>
+                  <?php } ?>                    
                   </select>
                 </div>
             
@@ -479,7 +441,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </div>
    
   <!--   Core JS Files   -->
-  <script src="assets/js/core/popper.min.js"></script>
+  <!-- <script src="assets/js/core/popper.min.js"></script>
   <script src="assets/js/core/bootstrap.min.js"></script>
   <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
   <script src="assets/js/plugins/smooth-scrollbar.min.js"></script>
@@ -491,10 +453,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
       Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
-  </script>
+  </script> -->
   <!-- Github buttons -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- <script async defer src="https://buttons.github.io/buttons.js"></script> -->
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="assets/js/argon-dashboard.min.js?v=2.1.0"></script>
-  <script src="./js/main.js"></script>
+  <!-- <script src="../assets/js/argon-dashboard.min.js?v=2.1.0"></script> -->
+  <script src="../assets/js/main.js"></script>
 </body>
+
+</html>

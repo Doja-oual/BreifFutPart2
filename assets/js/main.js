@@ -1,4 +1,4 @@
-alert("ok");
+
 
 //le id de parent  inpute de players   et gardian spicifique
 let playerInput = document.getElementById("player-input");
